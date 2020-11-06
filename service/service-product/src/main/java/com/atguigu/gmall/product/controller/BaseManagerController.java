@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "后台数据接口测试")
 @RestController//@ReponseBody +@Controller
 @RequestMapping("admin/product")
-@CrossOrigin
+//@CrossOrigin
 public class BaseManagerController {
 
     @Autowired

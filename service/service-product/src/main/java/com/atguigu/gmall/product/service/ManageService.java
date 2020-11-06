@@ -1,8 +1,8 @@
 package com.atguigu.gmall.product.service;
 
-
 import com.atguigu.gmall.model.product.*;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 
 public interface ManageService {
@@ -27,4 +27,13 @@ public interface ManageService {
 
     //根据平台属性ID，查询平台属性对象
     BaseAttrInfo getBaseAttrInfo(Long attrId);
+
+    //按照三级分类ID带分页的查询 pageSize,pageNo
+    //IPage<SpuInfo> getSpuInfoPage(Page<SpuInfo> page,Long category3Id);
+
+    //springmvc 对象传值
+    IPage<SpuInfo> getSpuInfoPage(Page<SpuInfo> page, SpuInfo spuInfo);
+
+
+
 }

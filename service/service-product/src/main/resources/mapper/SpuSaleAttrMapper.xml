@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.atguigu.gmall.product.mapper.SpuSaleAttrMapper">
+<!--
+        type：设置返回值的类型
+-->
+    <resultMap id="spuSaleAttrMap" type="com.atguigu.gmall.model.product.SpuSaleAttr" autoMapping="true">
+        <id property="id" column="id"></id>
+<!--        配置一个1 ： n的映射-->
+        <collection property="spuSaleAttrValueList" ofType="com.atguigu.gmall.model.product.SpuSaleAttrValue" autoMapping="true">
+<!--        主键-->
+            <id property="id" column="sale_attr_value_id"></id>
+        </collection>
+    </resultMap>
+    <sql id="spuSql">
+        ssa.id,
+            ssa.spu_id,
+            ssa.base_sale_attr_id,
+            ssa.sale_attr_name,
+            ssav.id sale_attr_value_id,
+            ssav.sale_attr_value_name
+    </sql>
+    <select id="selectSpuSaleAttrList" resultMap="spuSaleAttrMap">
+        select
+            <include refid="spuSql"></include>
+        from spu_sale_attr ssa inner join spu_sale_attr_value ssav
+        on ssa.base_sale_attr_id = ssav.base_sale_attr_id and ssa.spu_id = ssav.spu_id
+        where ssa.spu_id=#{spuId}
+    </select>
+    
+    <select id="selectSpuSaleAttrListCheckBySku" resultMap="spuSaleAttrMap">
+        select
+            ssa.id,
+            ssa.spu_id,
+            ssa.base_sale_attr_id,
+            ssa.sale_attr_name,
+            ssav.id sale_attr_value_id,
+            ssav.sale_attr_value_name,
+            ssv.sku_id,
+            if(ssv.sku_id is null ,0 ,1) is_checked # is null | is not null
+        from spu_sale_attr ssa inner join spu_sale_attr_value ssav
+            on ssa.spu_id = ssav.spu_id and ssa.base_sale_attr_id = ssav.base_sale_attr_id
+            left join sku_sale_attr_value ssv on ssv.sale_attr_value_id = ssav.id and ssv.sku_id = #{skuId}
+        where ssa.spu_id=#{spuId}
+        order by ssav.base_sale_attr_id , ssav.id
+    </select>
+</mapper>

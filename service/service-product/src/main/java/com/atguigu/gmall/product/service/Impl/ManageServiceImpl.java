@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -64,6 +65,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private BaseCategoryViewMapper baseCategoryViewMapper;
 
 
 
@@ -306,6 +310,41 @@ public class ManageServiceImpl implements ManageService {
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
+    }
+
+    @Override
+    public SkuInfo getSkuInfo(Long skuId) {
+        // select * from sku_info where id = skuId;
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        if(skuInfo!=null){
+            //获取skuImage 数据
+            //select *from sku_image where sku_id = skuId
+            QueryWrapper<SkuImage> skuImageQueryWrapper = new QueryWrapper<>();
+            skuImageQueryWrapper.eq("sku_id",skuId);
+            List<SkuImage> skuImageList = skuImageMaper.selectList(new QueryWrapper<SkuImage>().eq("sku_id", skuId));
+            skuInfo.setSkuImageList(skuImageList);
+        }
+        return skuInfo;
+    }
+
+    @Override
+    public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
+        return (BaseCategoryView) baseCategoryViewMapper.selectById(category3Id);
+    }
+
+    @Override
+    public BigDecimal getSkuPrice(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        if(skuInfo!=null){
+            return skuInfo.getPrice();
+        }
+        return new BigDecimal(0);
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
+
     }
 
 

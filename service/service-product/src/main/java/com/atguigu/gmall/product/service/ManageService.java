@@ -3,6 +3,8 @@ package com.atguigu.gmall.product.service;
 import com.atguigu.gmall.model.product.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ManageService {
@@ -56,4 +58,26 @@ public interface ManageService {
 
     //商品下架
     void cancelSale(Long skuId);
+
+    //根据SkuId获取数据
+    SkuInfo getSkuInfo(Long skuId);
+
+    /**
+     * 通过三级分类id查询分类名称
+     * @param category3Id
+     * @return
+     */
+    BaseCategoryView getCategoryViewByCategory3Id(Long category3Id);
+
+    /**
+     * 获取sku价格
+     * @param skuId
+     * @return
+     */
+    BigDecimal getSkuPrice(Long skuId);
+
+
+    //根据skuId，spuId获取销售属性集合
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
+
 }

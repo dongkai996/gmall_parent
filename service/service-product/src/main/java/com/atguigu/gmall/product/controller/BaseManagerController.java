@@ -2,10 +2,14 @@ package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.product.BaseAttrInfo;
+import com.atguigu.gmall.model.product.SpuImage;
 import com.atguigu.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Api(tags = "后台数据接口测试")
@@ -65,6 +69,16 @@ public class BaseManagerController {
         BaseAttrInfo baseAttrInfo = manageService.getBaseAttrInfo(attrId);
         //List<BaseAttrValue> baseAttrValueList = manageService.getAttrValueList(attrId);
         return Result.ok(baseAttrInfo.getAttrValueList());
+    }
+
+    @GetMapping("spuImageList/{spuId}")
+    public Result getSpuImageList(@PathVariable Long spuId){
+
+        //调用服务层
+        List<SpuImage> list = manageService.getSpuImageList(spuId);
+
+
+        return Result.ok(list);
     }
 
 }

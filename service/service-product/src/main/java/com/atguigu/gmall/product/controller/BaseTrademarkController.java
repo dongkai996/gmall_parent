@@ -6,6 +6,7 @@ import com.atguigu.gmall.product.service.BaseTrademarkService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,4 +52,16 @@ public class BaseTrademarkController {
     public Result getBaseTrademark(@PathVariable Long id){
         return Result.ok(baseTrademarkService.getById(id));
     }
+
+    //http://api.gmall.com/admin/product/baseTrademark/getTrademarkList
+    @ApiOperation("获取所有品牌")
+    @GetMapping("getTrademarkList")
+    public Result getTrademarkList(){
+        //select * from base_trademark
+        return Result.ok(baseTrademarkService.list(null));
+
+    }
+
+
+
 }

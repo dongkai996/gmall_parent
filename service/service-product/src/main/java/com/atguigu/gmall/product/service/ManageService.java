@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface ManageService {
     //查询所有一级分类数据
@@ -79,5 +80,9 @@ public interface ManageService {
 
     //根据skuId，spuId获取销售属性集合
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
+
+    // 根据spuId 查询map 集合数据
+    Map getSkuValueIdsMap(Long spuId);
+
 
 }

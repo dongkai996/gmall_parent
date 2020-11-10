@@ -6,19 +6,16 @@ import com.atguigu.gmall.product.mapper.*;
 import com.atguigu.gmall.product.service.ManageService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-
-import jodd.util.CollectionUtil;
-import org.aspectj.apache.bcel.generic.FieldOrMethod;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ManageServiceImpl implements ManageService {
@@ -314,6 +311,13 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public SkuInfo getSkuInfo(Long skuId) {
+
+        /*
+        if(true){
+        get
+        }
+         */
+
         // select * from sku_info where id = skuId;
         SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
         if(skuInfo!=null){
@@ -329,7 +333,7 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
-        return (BaseCategoryView) baseCategoryViewMapper.selectById(category3Id);
+        return baseCategoryViewMapper.selectById(category3Id);
     }
 
     @Override
@@ -345,6 +349,24 @@ public class ManageServiceImpl implements ManageService {
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
         return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
 
+    }
+
+    @Override
+    public Map getSkuValueIdsMap(Long spuId) {
+
+        HashMap<Object, Object> hashMap = new HashMap<>();
+
+        List<Map> mapList = skuSaleAttrValueMapper.selectSaleAttrValuesBySpu(spuId);
+        if(!CollectionUtils.isEmpty(mapList)){
+            for(Map map : mapList){
+                System.out.println("--------------------------------");
+                System.out.println(map.get("values_id"));
+                System.out.println(map.get("sku_id"));
+                hashMap.put(map.get("values_id"),map.get("sku_id"));
+
+            }
+        }
+        return hashMap;
     }
 
 

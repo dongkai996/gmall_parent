@@ -2,6 +2,7 @@ package com.atguigu.gmall.item.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.item.service.ItemService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +14,15 @@ import java.util.Map;
 /**
  * 这个控制器是给web-all提供的
  */
+@Api(tags = "集合")
 @RestController
 @RequestMapping("api/item")
 public class ItemApiController {
     @Autowired
     private ItemService itemService;
-    @GetMapping("skuId")
+    @GetMapping("{skuId}")
     public Result getItem(@PathVariable Long skuId){
-        Map<String, Object> map = itemService.getBySkuId(skuId);
+        Map<String,Object> map = itemService.getBySkuId(skuId);
         return Result.ok(map);
     }
 }
